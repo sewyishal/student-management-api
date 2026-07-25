@@ -48,6 +48,27 @@ app.post('/departments',(req,res)=>{
     })
 })
 
+app.post('/students',(req,res)=>{
+    const sql=`INSERT INTO students(student_name,email,department_id)VALUES(?,?,?)`
+    const values=[req.body.student_name,req.body.email,req.body.department_id]
+    connection.query(sql,values,(err,results)=>{
+        if(err){
+            res.status(500).send(err)
+        }else{
+            res.json(results)
+            console.log("Student added successfully")
+        } 
+    })
+})
+
+app.get('/students',(req,res)=>{
+    connection.query(`SELECT * FROM students`,(err,results)=>{
+        if(err){}
+    })
+
+})
+
+
 app.listen(3000,()=>{
     console.log("App is running at http://localhost:3000/ ")
 })
