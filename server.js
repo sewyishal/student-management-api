@@ -63,9 +63,12 @@ app.post('/students',(req,res)=>{
 
 app.get('/students',(req,res)=>{
     connection.query(`SELECT * FROM students`,(err,results)=>{
-        if(err){}
+        if(err){
+            res.status(500).send(err)
+        }else{
+            res.json(results)
+        }
     })
-
 })
 
 
