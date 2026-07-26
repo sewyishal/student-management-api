@@ -17,13 +17,16 @@ connection.connect((err)=>{
     } else{
         console.log("Database connected successfully")
         connection.query(`CREATE TABLE IF NOT EXISTS departments(
-            department_id INT AUTO_INCREMENT PRIMARY KEY ,department_name VARCHAR(255) NOT NULL )`,(err,results)=>{
+            department_id INT AUTO_INCREMENT PRIMARY KEY ,department_name VARCHAR(255) NOT NULL )`,
+            (err,results)=>{
                 if(err){
                     console.log(err)
                 }else{
                     connection.query(`CREATE TABLE IF NOT EXISTS students(
-                        student_id INT AUTO_INCREMENT PRIMARY KEY ,student_name VARCHAR(255) NOT NULL, email VARCHAR(255) UNIQUE ,department_id  INT,
-                         FOREIGN KEY(department_id) REFERENCES departments(department_id))`,(err,results)=>{
+                        student_id INT AUTO_INCREMENT PRIMARY KEY ,student_name VARCHAR(255) NOT NULL, 
+                        email VARCHAR(255) UNIQUE ,department_id  INT,
+                         FOREIGN KEY(department_id) REFERENCES departments(department_id))`,
+                         (err,results)=>{
                             if(err){
                                 console.log(err)
                             }else{
@@ -71,18 +74,35 @@ app.get('/students',(req,res)=>{
     })
 })
 
-app.get('/students/:id',(req,res)=>{
-    const sql=`SELECT * FROM students WHERE student_id=?`
-    const values=[req.params.id]
-    connection.query(sql,values,(err,results)=>{
-        if(err){
-            res.status(500).send(err)
-        }else if(results.length===0){
-            res.status(404).send("Student not found")
-        }else{
-            res.json(results)
-        }
-    })
+// app.get('/students/:id',(req,res)=>{
+//     const sql=`SELECT * FROM students WHERE student_id=?`
+//     const values=[req.params.id]
+//     connection.query(sql,values,(err,results)=>{
+//         if(err){
+//             res.status(500).send(err)
+//         }else if(results.length===0){
+//             res.status(404).send("Student not found")
+//         }else{
+//             res.json(results)
+//         }
+//     })
+// })
+
+app.get('/students-with-department',(req,res)=>{
+    connection.query(`SELECT
+         students.student_id ,
+         students.student_name ,
+         students.email ,
+         departments.department_name
+         FROM students
+         JOIN departments
+         ON students.department_id=departments.department_id`,(err,results)=>{
+            if(err){
+                res.status(500).send(err)
+            } else{
+                res.json(results)
+            }
+         })
 })
 
 app.listen(3000,()=>{
