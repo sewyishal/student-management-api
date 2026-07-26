@@ -71,6 +71,19 @@ app.get('/students',(req,res)=>{
     })
 })
 
+app.get('/students/:id',(req,res)=>{
+    const sql=`SELECT * FROM students WHERE student_id=?`
+    const values=[req.params.id]
+    connection.query(sql,values,(err,results)=>{
+        if(err){
+            res.status(500).send(err)
+        }else if(results.length===0){
+            res.status(404).send("Student not found")
+        }else{
+            res.json(results)
+        }
+    })
+})
 
 app.listen(3000,()=>{
     console.log("App is running at http://localhost:3000/ ")
