@@ -74,19 +74,19 @@ app.get('/students',(req,res)=>{
     })
 })
 
-// app.get('/students/:id',(req,res)=>{
-//     const sql=`SELECT * FROM students WHERE student_id=?`
-//     const values=[req.params.id]
-//     connection.query(sql,values,(err,results)=>{
-//         if(err){
-//             res.status(500).send(err)
-//         }else if(results.length===0){
-//             res.status(404).send("Student not found")
-//         }else{
-//             res.json(results)
-//         }
-//     })
-// })
+app.get('/students/:id',(req,res)=>{
+    const sql=`SELECT * FROM students WHERE student_id=?`
+    const values=[req.params.id]
+    connection.query(sql,values,(err,results)=>{
+        if(err){
+            res.status(500).send(err)
+        }else if(results.length===0){
+            res.status(404).send("Student not found")
+        }else{
+            res.json(results)
+        }
+    })
+})
 
 app.get('/students-with-department',(req,res)=>{
     connection.query(`SELECT
@@ -103,6 +103,22 @@ app.get('/students-with-department',(req,res)=>{
                 res.json(results)
             }
          })
+})
+
+app.put('/students/:id',(req,res)=>{
+    const sql=`UPDATE students SET 
+    student_name=?, email=?,department_id=? WHERE student_id=?` 
+    const values=[req.body.student_name,req.body.email,req.body.department_id,req.params.id]
+    connection.query(sql,values,(err,results)=>{
+        if(err){
+            res.status(500).send(err)
+        } else if(results.affectedRows==0){
+            res.status(404).send('Student not found')
+        } else{
+            console.log("Table Updates successfully")
+            res.status(200).send("student table updated successfully")
+        }
+    })
 })
 
 app.listen(3000,()=>{
