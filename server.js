@@ -121,6 +121,20 @@ app.put('/students/:id',(req,res)=>{
     })
 })
 
+app.delete('/students/:id',(req,res)=>{
+    const sql =`DELETE FROM students WHERE student_id=?`
+    const values=[req.params.id]
+    connection.query(sql,values,(err,results)=>{
+        if(err){
+            res.status(500).send(err)
+        }else if(results.affectedRows===0){
+            res.status(404).send("student doesn't exist")
+        }else{
+            res.status(200).send("student deleted successfully")
+        }
+    })
+})
+
 app.listen(3000,()=>{
     console.log("App is running at http://localhost:3000/ ")
 })
