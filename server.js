@@ -1,16 +1,10 @@
 const express = require('express');
-const  mysql = require('mysql2')
+const connection =require('./config/db')
 
 const app= express();
 
 app.use(express.json())
 
-const connection= mysql.createConnection({
-    host:"localhost",
-    user:"abebe",
-    password:"abe123",
-    database:"mini"
-})
 connection.connect((err)=>{
     if(err){
         console.log(err)
