@@ -1,7 +1,9 @@
 const express = require('express');
 const connection =require('./config/db')
-
+const departmentRoutes= require('./routes/departmentRoutes')
 const app= express();
+
+app.use(departmentRoutes);
 
 app.use(express.json())
 
@@ -32,18 +34,7 @@ connection.connect((err)=>{
     }
 })
 
-app.post('/departments',(req,res)=>{
-    const sql=`INSERT INTO departments(department_name) VALUES(?)`
-    const values=[req.body.department_name]
-    connection.query(sql,values,(err,results)=>{
-        if(err){
-            res.status(500).send(err)
-        }else{
-            res.json(results)
-            console.log("Department added successfully")
-        }
-    })
-})
+
 
 app.post('/students',(req,res)=>{
     const sql=`INSERT INTO students(student_name,email,department_id)VALUES(?,?,?)`
