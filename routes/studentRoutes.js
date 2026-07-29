@@ -1,9 +1,11 @@
 const express = require('express')
 const connection =require('../config/db');
 const {addStudent,getAllStudents,getStudentById,getStudentsWithDepartment, updateStudent, deleteStudent} = require('../controllers/studentController');
+const validateStudent = require('../middleware/validateStudent');
+
 const router =express.Router();
 
-router.post('/students',addStudent)
+router.post('/students',validateStudent,addStudent)
 
 router.get('/students',getAllStudents)
 

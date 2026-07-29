@@ -7,6 +7,12 @@ const errorHandler = (err, req, res, next) => {
             message: "Email already exists"
         })
     }
+     if (err.code === 'ER_NO_REFERENCED_ROW_2') {
+        return res.status(400).json({
+            success: false,
+            message: "Department does not exist"
+        })
+    }
     res.status(500).json({
         success : false,
         message:"Something went wrong"

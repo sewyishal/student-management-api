@@ -5,7 +5,6 @@ const addStudent= (req,res,next)=>{
     const values=[req.body.student_name,req.body.email,req.body.department_id]
     connection.query(sql,values,(err,results)=>{
         if(err){
-            console.log(err)
             next(err)
         }else{
             res.json(results)
