@@ -1,11 +1,12 @@
 const connection = require('../config/db')
 
-const addStudent= (req,res)=>{
+const addStudent= (req,res,next)=>{
     const sql=`INSERT INTO students(student_name,email,department_id)VALUES(?,?,?)`
     const values=[req.body.student_name,req.body.email,req.body.department_id]
     connection.query(sql,values,(err,results)=>{
         if(err){
-            res.status(500).send(err)
+            console.log(err)
+            next(err)
         }else{
             res.json(results)
             console.log("Student added successfully")
@@ -13,21 +14,21 @@ const addStudent= (req,res)=>{
     })
 }
 
-const getAllStudents =(req,res)=>{
+const getAllStudents =(req,res,next)=>{
     connection.query(`SELECT * FROM students`,(err,results)=>{
         if(err){
-            res.status(500).send(err)
+           next(err)
         }else{
             res.json(results)
         }
     })
 }
-const getStudentById= (req,res)=>{
+const getStudentById= (req,res,next)=>{
     const sql=`SELECT * FROM students WHERE student_id=?`
     const values=[req.params.id]
     connection.query(sql,values,(err,results)=>{
         if(err){
-            res.status(500).send(err)
+           next(err)
         }else if(results.length===0){
             res.status(404).send("Student not found")
         }else{
@@ -35,7 +36,7 @@ const getStudentById= (req,res)=>{
         }
     })
 }
-const getStudentsWithDepartment= (req,res)=>{ connection.query(`SELECT
+const getStudentsWithDepartment= (req,res,next)=>{ connection.query(`SELECT
          students.student_id ,
          students.student_name ,
          students.email ,
@@ -44,19 +45,19 @@ const getStudentsWithDepartment= (req,res)=>{ connection.query(`SELECT
          JOIN departments
          ON students.department_id=departments.department_id`,(err,results)=>{
             if(err){
-                res.status(500).send(err)
+                next(err)
             } else{
                 res.json(results)
             }
          })
 }
-const updateStudent = (req,res)=>{
+const updateStudent = (req,res,next)=>{
     const sql=`UPDATE students SET 
     student_name=?, email=?,department_id=? WHERE student_id=?` 
     const values=[req.body.student_name,req.body.email,req.body.department_id,req.params.id]
     connection.query(sql,values,(err,results)=>{
         if(err){
-            res.status(500).send(err)
+            next(err)
         } else if(results.affectedRows==0){
             res.status(404).send('Student not found')
         } else{
@@ -66,12 +67,12 @@ const updateStudent = (req,res)=>{
     })
 }
 
-const deleteStudent = (req,res)=>{
+const deleteStudent = (req,res,next)=>{
     const sql =`DELETE FROM students WHERE student_id=?`
     const values=[req.params.id]
     connection.query(sql,values,(err,results)=>{
         if(err){
-            res.status(500).send(err)
+            next(err)
         }else if(results.affectedRows===0){
             res.status(404).send("student doesn't exist")
         }else{
