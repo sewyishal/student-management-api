@@ -1,6 +1,8 @@
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const validateStudent = (req, res, next) => {
+    console.log("Validation reached")
+    console.log(req.body)
     if (!req.body.student_name) {
         return res.status(400).json({
             success: false,
@@ -20,6 +22,12 @@ const validateStudent = (req, res, next) => {
             success: false,
             message: "Email format is not correct"
         });
+    }
+    if(!req.body.department_id){
+        return res.status(400).json({
+            success: false ,
+            message:"Department Id is required"
+        })
     }
 
     next();
