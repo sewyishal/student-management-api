@@ -1,8 +1,7 @@
+const connection = require('../config/db');
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const validateStudent = (req, res, next) => {
-    console.log("Validation reached")
-    console.log(req.body)
     if (!req.body.student_name) {
         return res.status(400).json({
             success: false,
@@ -29,7 +28,6 @@ const validateStudent = (req, res, next) => {
             message:"Department Id is required"
         })
     }
-
     next();
 };
 
