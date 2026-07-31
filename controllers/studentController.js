@@ -7,8 +7,11 @@ const addStudent= (req,res,next)=>{
         if(err){
             next(err)
         }else{
-            res.json(results)
-            console.log("Student added successfully")
+            return res.status(201).json({
+                success: true,
+                message:"Student Added successfully",
+                student_id:results.insertId
+            })
         } 
     })
 }
@@ -18,7 +21,10 @@ const getAllStudents =(req,res,next)=>{
         if(err){
            next(err)
         }else{
-            res.json(results)
+            return res.status(200).json({
+                success: true,
+                data: results
+            })
         }
     })
 }
@@ -31,7 +37,10 @@ const getStudentById= (req,res,next)=>{
         }else if(results.length===0){
             res.status(404).send("Student not found")
         }else{
-            res.json(results)
+            return res.status(200).json({
+                success:true,
+                data: results[0]
+            })
         }
     })
 }
@@ -58,10 +67,16 @@ const updateStudent = (req,res,next)=>{
         if(err){
             next(err)
         } else if(results.affectedRows==0){
-            res.status(404).send('Student not found')
+            return res.status(400).json({
+                success: false,
+                message:"Student not found"
+            })
         } else{
             console.log("Table Updates successfully")
-            res.status(200).send("student table updated successfully")
+           return res.status(200).json({
+            success: true,
+            message:"Student updated successfully"
+           })
         }
     })
 }
@@ -73,9 +88,15 @@ const deleteStudent = (req,res,next)=>{
         if(err){
             next(err)
         }else if(results.affectedRows===0){
-            res.status(404).send("student doesn't exist")
+            return res.status(400).json({
+                success:false,
+                message:"Student not found"
+            })
         }else{
-            res.status(200).send("student deleted successfully")
+         return res.status(200).json({
+            success:false,
+            message:"Student deleted successfully"
+         })
         }
     })
 }
