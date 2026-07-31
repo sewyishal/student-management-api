@@ -7,8 +7,11 @@ const addDepartment=(req,res,next)=>{
         if(err){
             next(err)
         }else{
-            res.json(results)
-            console.log("Department added successfully")
+           return res.status(201).json({
+            success: true,
+            message:"Department Added successfully",
+            department_id: results.insertId
+           })
         }
     })
 }
