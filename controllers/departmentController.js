@@ -47,6 +47,25 @@ const getDepartmentById=(req,res,next)=>{
     })
 }
 
+const updateDepartment= (req,res,next)=>{
+    const sql=`UPDATE departments SET department_name=? WHERE department_id=?`
+    const values=[req.body.department_name,req.params.id]
+    connection.query(sql,values,(err,results)=>{
+        if(err){
+            return next(err)
+        } else if(results.affectedRows===0){
+            res.status(404).json({
+                success: false,
+                message:"Department not found"
+            })
+        }
+        else{
+            res.status(200).json({
+                success: true,
+                message:"Department updated successfully"
+            })
+        }
+    })
+}
 
-
-module.exports={addDepartment,getAllDepartments,getDepartmentById}
+module.exports={addDepartment,getAllDepartments,getDepartmentById,updateDepartment}
