@@ -1,6 +1,6 @@
 const createTables=()=>{
     connection.query(`CREATE TABLE IF NOT EXISTS departments(
-            department_id INT AUTO_INCREMENT PRIMARY KEY ,department_name VARCHAR(255) NOT NULL )`,
+            department_id INT AUTO_INCREMENT PRIMARY KEY ,department_name VARCHAR(255))`,
             (err,results)=>{
                 if(err){
                     console.log(err)
