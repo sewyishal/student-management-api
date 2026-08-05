@@ -54,13 +54,13 @@ const updateDepartment= (req,res,next)=>{
         if(err){
             return next(err)
         } else if(results.affectedRows===0){
-            res.status(404).json({
+        return res.status(404).json({
                 success: false,
                 message:"Department not found"
             })
         }
         else{
-            res.status(200).json({
+            return res.status(200).json({
                 success: true,
                 message:"Department updated successfully"
             })
@@ -68,4 +68,24 @@ const updateDepartment= (req,res,next)=>{
     })
 }
 
-module.exports={addDepartment,getAllDepartments,getDepartmentById,updateDepartment}
+const deleteDepartment= (req,res,next)=>{
+    const sql =`DELETE FROM departments WHERE department_id=?`
+    const values=[req.params.id]
+    connection.query(sql,values,(err,results)=>{
+        if(err){
+            return next(err)
+        } else if(results.affectedRows===0){
+            return res.status(404).json({
+                success:false,
+                message:"department not found"
+            })
+        }else{
+            return res.status(200).json({
+                success: true,
+                message:"deparmtent deleted successfully"
+            })
+        }
+    })
+}
+
+module.exports={addDepartment,getAllDepartments,getDepartmentById,updateDepartment,deleteDepartment}

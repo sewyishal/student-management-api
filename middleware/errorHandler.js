@@ -7,7 +7,13 @@ const errorHandler = (err, req, res, next) => {
             message: "Email already exists"
         })
     }
-     if (err.code === 'ER_NO_REFERENCED_ROW_2') {
+ if (err.code === 'ER_ROW_IS_REFERENCED_2') {
+    return res.status(400).json({
+        success: false,
+        message: "Cannot delete department because students belong to it."
+    });
+}
+ if (err.code === 'ER_NO_REFERENCED_ROW_2') {
         return res.status(400).json({
             success: false,
             message: "Department does not exist"
