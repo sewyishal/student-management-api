@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 const connection =require('./config/db')
 const createTables =require('./database/init')
@@ -23,3 +24,4 @@ connection.connect((err)=>{
 app.listen(3000,()=>{
     console.log("App is running at http://localhost:3000/ ")
 })
+console.log(process.env.DB_NAME)
