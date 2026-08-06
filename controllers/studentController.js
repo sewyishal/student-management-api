@@ -5,7 +5,7 @@ const addStudent= async (req,res,next)=>{
         const sql= `INSERT INTO students(student_name,email,department_id)VALUES(?,?,?)`
         const values=[req.body.student_name,req.body.email,req.body.department_id]
         const [results]=await connection.promise().query(sql,values)
-        res.status(201).json({
+        return res.status(201).json({
             success: true,
             message: "Student inserted successfully",
             student_id:results.insertId
@@ -16,34 +16,34 @@ const addStudent= async (req,res,next)=>{
     }
     
 }
-const getAllStudents =(req,res,next)=>{
-    connection.query(`SELECT * FROM students`,(err,results)=>{
-        if(err){
-           next(err)
-        }else{
-            return res.status(200).json({
-                success: true,
-                data: results
-            })
-        }
-    })
+const getAllStudents = async (req,res,next)=>{
+    try{
+        const [results]= await connection.promise().query(`SELECT * FROM STUDENTS`)
+        return res.json({
+            success: true,
+            data: results
+        })
+    } catch(err){
+        return next(err)
+    }
 }
-const getStudentById= (req,res,next)=>{
-    const sql=`SELECT * FROM students WHERE student_id=?`
-    const values=[req.params.id]
-    connection.query(sql,values,(err,results)=>{
-        if(err){
-           next(err)
-        }else if(results.length===0){
-            res.status(404).send("Student not found")
-        }else{
-            return res.status(200).json({
-                success:true,
-                data: results[0]
-            })
-        }
-    })
+
+const getStudentById= async (req,res,next)=>{
+    try{
+        const sql =`SELECT * FROM students WHERE student_id=?`
+        const values=[req.params.id]
+        const [results]= await connection.promise().query(sql,values)
+
+        return res.status(200).json({
+            success: true,
+            data: results[0]
+        })
+    } catch(err){
+        return next(err)
+    }
 }
+
+
 const getStudentsWithDepartment= (req,res,next)=>{ connection.query(`SELECT
          students.student_id ,
          students.student_name ,
