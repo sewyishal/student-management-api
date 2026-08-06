@@ -78,7 +78,7 @@ const deleteDepartment = async (req,res,next)=>{
          const sql= `DELETE FROM departments WHERE department_id=?`
          const values=[req.params.id]
          const [results]= await connection.promise().query(sql,values)
-         res.status(200).json({
+         return res.status(200).json({
             success: true,
             message: "Department deleted successfully"
          })

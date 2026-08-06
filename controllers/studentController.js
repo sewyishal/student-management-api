@@ -1,21 +1,21 @@
 const connection = require('../config/db')
 
-const addStudent= (req,res,next)=>{
-    const sql=`INSERT INTO students(student_name,email,department_id)VALUES(?,?,?)`
-    const values=[req.body.student_name,req.body.email,req.body.department_id]
-    connection.query(sql,values,(err,results)=>{
-        if(err){
-            next(err)
-        }else{
-            return res.status(201).json({
-                success: true,
-                message:"Student Added successfully",
-                student_id:results.insertId
-            })
-        } 
-    })
+const addStudent= async (req,res,next)=>{
+    try{
+        const sql= `INSERT INTO students(student_name,email,department_id)VALUES(?,?,?)`
+        const values=[req.body.student_name,req.body.email,req.body.department_id]
+        const [results]=await connection.promise().query(sql,values)
+        res.status(201).json({
+            success: true,
+            message: "Student inserted successfully",
+            student_id:results.insertId
+        })
+    }
+    catch(err){
+        return next(err)
+    }
+    
 }
-
 const getAllStudents =(req,res,next)=>{
     connection.query(`SELECT * FROM students`,(err,results)=>{
         if(err){
