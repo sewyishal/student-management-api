@@ -45,32 +45,32 @@ const getDepartmentById= async (req,res,next)=>{
     success: true,
     data: results[0]
    })
-}
+   }
 catch(err){
     return next(err)
-}
-    
-}
+}}
 
-const updateDepartment= (req,res,next)=>{
+const updateDepartment= async (req,res,next)=>{
+    try{
     const sql=`UPDATE departments SET department_name=? WHERE department_id=?`
     const values=[req.body.department_name,req.params.id]
-    connection.query(sql,values,(err,results)=>{
-        if(err){
-            return next(err)
-        } else if(results.affectedRows===0){
+    const [results]= await connection.promise().query(sql,values,)
+        
+    if(results.affectedRows===0){
         return res.status(404).json({
-                success: false,
-                message:"Department not found"
-            })
-        }
-        else{
-            return res.status(200).json({
-                success: true,
-                message:"Department updated successfully"
-            })
-        }
+            success: false,
+            message:"Department is not found"
+        })
+    }
+    return res.status(200).json({
+        success: true,
+        message:"Department updated successfully"
     })
+    }
+    catch(err){
+        return next(err)
+    }
+   
 }
 
 const deleteDepartment= (req,res,next)=>{
