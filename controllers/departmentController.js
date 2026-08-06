@@ -1,19 +1,20 @@
 const connection= require('../config/db')
 
-const addDepartment=(req,res,next)=>{
-    const sql=`INSERT INTO departments(department_name) VALUES(?)`
-    const values=[req.body.department_name]
-    connection.query(sql,values,(err,results)=>{
-        if(err){
-            next(err)
-        }else{
-           return res.status(201).json({
+const addDepartment=async (req,res,next)=>{
+    try{
+        const sql=`INSERT INTO departments(department_name) VALUES(?)`
+        const values=[req.body.department_name]
+        const [results]= await connection.promise().query(sql,values)
+
+        return res.status(201).json({
             success: true,
-            message:"Department Added successfully",
-            department_id: results.insertId
-           })
-        }
-    })
+            message:"Department added successfully",
+            department_id:results.insertId
+        })
+    }
+    catch(err){
+        return next(err)
+    } 
 }
 const getAllDepartments =async (req,res,next)=>{
     try{
@@ -25,8 +26,7 @@ const getAllDepartments =async (req,res,next)=>{
     }
     catch(err){
         return next(err)
-    }
-    
+    }  
 } 
 const getDepartmentById= async (req,res,next)=>{
     try{
@@ -73,24 +73,20 @@ const updateDepartment= async (req,res,next)=>{
    
 }
 
-const deleteDepartment= (req,res,next)=>{
-    const sql =`DELETE FROM departments WHERE department_id=?`
-    const values=[req.params.id]
-    connection.query(sql,values,(err,results)=>{
-        if(err){
-            return next(err)
-        } else if(results.affectedRows===0){
-            return res.status(404).json({
-                success:false,
-                message:"department not found"
-            })
-        }else{
-            return res.status(200).json({
-                success: true,
-                message:"deparmtent deleted successfully"
-            })
-        }
-    })
+const deleteDepartment = async (req,res,next)=>{
+    try{
+         const sql= `DELETE FROM departments WHERE department_id=?`
+         const values=[req.params.id]
+         const [results]= await connection.promise().query(sql,values)
+         res.status(200).json({
+            success: true,
+            message: "Department deleted successfully"
+         })
+
+    }
+   catch(err){
+    return next(err)
+   }
 }
 
 module.exports={addDepartment,getAllDepartments,getDepartmentById,updateDepartment,deleteDepartment}
