@@ -33,7 +33,12 @@ const getStudentById= async (req,res,next)=>{
         const sql =`SELECT * FROM students WHERE student_id=?`
         const values=[req.params.id]
         const [results]= await connection.promise().query(sql,values)
-
+            if(results.length===0){
+        return res.status(404).json({
+            success: false,
+            message:"Student not found"
+        })
+        }
         return res.status(200).json({
             success: true,
             data: results[0]
@@ -62,7 +67,12 @@ const updateStudent = async (req,res,next)=>{
     student_name=?, email=?,department_id=? WHERE student_id=?` 
     const values=[req.body.student_name,req.body.email,req.body.department_id,req.params.id]
     const [results]= await connection.promise().query(sql,values)
-
+        if(results.affectedRows===0){
+        return res.status(404).json({
+            success: false,
+            message:"Student not found"
+        })
+    }
     return res.status(200).json({
         success: true,
         message:"Student updated successfully"
@@ -73,24 +83,26 @@ const updateStudent = async (req,res,next)=>{
    }
 }
 
-const deleteStudent = (req,res,next)=>{
+const deleteStudent = async (req,res,next)=>{
+   try{
     const sql =`DELETE FROM students WHERE student_id=?`
     const values=[req.params.id]
-    connection.query(sql,values,(err,results)=>{
-        if(err){
-            next(err)
-        }else if(results.affectedRows===0){
-            return res.status(400).json({
-                success:false,
-                message:"Student not found"
-            })
-        }else{
-         return res.status(200).json({
-            success:false,
-            message:"Student deleted successfully"
-         })
-        }
+    const [results]= await connection.promise().query(sql,values)
+
+    if(results.affectedRows===0){
+        return res.status(404).json({
+            success: false,
+            message:"Student not found"
+        })
+    }
+    return res.status(200).json({
+        success: true,
+        message:"Student deleted successfully"
     })
+} 
+catch(err){
+    return next(err)
+   }
 }
 
 module.exports={addStudent,getAllStudents,getStudentById,getStudentsWithDepartment,updateStudent,deleteStudent}
