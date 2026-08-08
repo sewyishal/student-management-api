@@ -1,4 +1,5 @@
 const connection = require('../config/db')
+const {getAllStudents: getAllStudentsService } = require('../services/studentService')
 
 const addStudent= async (req,res,next)=>{
     try{
@@ -18,7 +19,7 @@ const addStudent= async (req,res,next)=>{
 }
 const getAllStudents = async (req,res,next)=>{
     try{
-        const [results]= await connection.promise().query(`SELECT * FROM STUDENTS`)
+        const results= await getAllStudentsService()
         return res.json({
             success: true,
             data: results
@@ -49,7 +50,10 @@ const getStudentById= async (req,res,next)=>{
 }
 const getStudentsWithDepartment = async (req,res,next)=>{
     try{
-        const [results]= await connection.promise().query(`SELECT students.student_name , students.email, departments.department_name FROM students JOIN departments ON students.department_id=departments.department_id`)
+        const [results]= await connection.promise().query(`SELECT students.student_name , students.email, departments.department_name 
+        FROM students 
+        JOIN departments 
+        ON students.department_id=departments.department_id`)
 
         return res.status(200).json({
             success: true,
