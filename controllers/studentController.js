@@ -1,5 +1,5 @@
 const connection = require('../config/db')
-const {getAllStudentsService,getStudentByIdService,addStudentService,updateStudentService } = require('../services/studentService')
+const {getAllStudentsService,getStudentByIdService,addStudentService,updateStudentService, deleteStudentService } = require('../services/studentService')
    
 
 const addStudent= async (req,res,next)=>{
@@ -65,7 +65,7 @@ const getStudentsWithDepartment = async (req,res,next)=>{
 const updateStudent = async (req,res,next)=>{
    try{
     const results= await updateStudentService(req.body.student_name,req.body.email,req.body.department_id,req.params.id)
-    
+
         if(results.affectedRows===0){
         return res.status(404).json({
             success: false,
@@ -84,10 +84,7 @@ const updateStudent = async (req,res,next)=>{
 
 const deleteStudent = async (req,res,next)=>{
    try{
-    const sql =`DELETE FROM students WHERE student_id=?`
-    const values=[req.params.id]
-    const [results]= await connection.promise().query(sql,values)
-
+    const results= await deleteStudentService(req.params.id)
     if(results.affectedRows===0){
         return res.status(404).json({
             success: false,

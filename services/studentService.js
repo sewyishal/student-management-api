@@ -33,4 +33,12 @@ const values=[student_name,                       email,department_id,id]
     return results
 }
 
-module.exports={getAllStudentsService,getStudentByIdService,addStudentService,updateStudentService}
+const deleteStudentService = async(id) =>{
+    const sql =`DELETE FROM students WHERE student_id=?`
+    const values=[id]
+    const [results]= await connection.promise().query(sql,values)
+    return results
+}
+
+
+module.exports={getAllStudentsService,getStudentByIdService,addStudentService,updateStudentService,deleteStudentService}
