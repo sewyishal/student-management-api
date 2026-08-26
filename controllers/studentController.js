@@ -1,5 +1,4 @@
-const connection = require('../config/db')
-const {getAllStudentsService,getStudentByIdService,addStudentService,updateStudentService, deleteStudentService } = require('../services/studentService')
+const {getAllStudentsService,getStudentByIdService,addStudentService,updateStudentService, deleteStudentService, getStudentsWithDepartmentService } = require('../services/studentService')
    
 
 const addStudent= async (req,res,next)=>{
@@ -47,11 +46,7 @@ const getStudentById= async (req,res,next)=>{
 }
 const getStudentsWithDepartment = async (req,res,next)=>{
     try{
-        const [results]= await connection.promise().query(`SELECT students.student_name , students.email, departments.department_name 
-        FROM students 
-        JOIN departments 
-        ON students.department_id=departments.department_id`)
-
+        const results = await getStudentsWithDepartmentService()
         return res.status(200).json({
             success: true,
             data: results

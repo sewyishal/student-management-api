@@ -13,7 +13,7 @@ router.get('/students',getAllStudents)
 router.get('/students/:id',getStudentById)
 
 router.get('/students-with-department',getStudentsWithDepartment)
-ዝ
+
 router.put('/students/:id',validateStudent,checkDepartment,updateStudent)
 
 router.delete('/students/:id',deleteStudent)

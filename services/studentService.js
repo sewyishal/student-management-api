@@ -16,7 +16,9 @@ const getStudentByIdService = async (id)=>{
 
 
 const addStudentService = async(student_name,email,department_id)=>{
-     const sql= `INSERT INTO students(student_name,email,department_id)VALUES(?,?,?)`
+     const sql= `INSERT INTO students(student_name,
+     email,
+     department_id)VALUES(?,?,?)`
         const values=[student_name,email,department_id]
         const [results]=await connection.promise().query(sql,values)
         
@@ -40,5 +42,15 @@ const deleteStudentService = async(id) =>{
     return results
 }
 
+const getStudentsWithDepartmentService = async()=>{
+    const [results]= await connection.promise().query(`SELECT
+        students.student_name , 
+        students.email, 
+        departments.department_name 
+        FROM students 
+        JOIN departments 
+        ON students.department_id=departments.department_id`)
+        return results
+}
 
-module.exports={getAllStudentsService,getStudentByIdService,addStudentService,updateStudentService,deleteStudentService}
+module.exports={getAllStudentsService,getStudentByIdService,addStudentService,updateStudentService,deleteStudentService,getStudentsWithDepartmentService}
