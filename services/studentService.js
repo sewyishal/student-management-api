@@ -27,7 +27,10 @@ const updateStudentService = async (
 ) =>{
     const sql=`UPDATE students SET 
     student_name=?, email=?,department_id=? WHERE student_id=?` 
-    
+
+const values=[student_name,                       email,department_id,id]
+    const [results]= await connection.promise().query(sql,values)
+    return results
 }
 
-module.exports={getAllStudentsService,getStudentByIdService,addStudentService}
+module.exports={getAllStudentsService,getStudentByIdService,addStudentService,updateStudentService}

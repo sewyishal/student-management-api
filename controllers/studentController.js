@@ -1,5 +1,5 @@
 const connection = require('../config/db')
-const {getAllStudentsService,getStudentByIdService,addStudentService } = require('../services/studentService')
+const {getAllStudentsService,getStudentByIdService,addStudentService,updateStudentService } = require('../services/studentService')
    
 
 const addStudent= async (req,res,next)=>{
@@ -64,13 +64,8 @@ const getStudentsWithDepartment = async (req,res,next)=>{
 
 const updateStudent = async (req,res,next)=>{
    try{
-     const sql=`UPDATE students SET 
-    student_name=?, email=?,department_id=? WHERE student_id=?` 
-    const values=[
-    req.body.student_name,                            req.body.email,
-        req.body.department_id,
-        req.params.id]
-    const [results]= await connection.promise().query(sql,values)
+    const results= await updateStudentService(req.body.student_name,req.body.email,req.body.department_id,req.params.id)
+    
         if(results.affectedRows===0){
         return res.status(404).json({
             success: false,
