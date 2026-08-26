@@ -1,13 +1,10 @@
 const connection = require('../config/db')
-const {getAllStudentsService } = require('../services/studentService')
-const {getStudentByIdService } =
-    require('../services/studentService');
+const {getAllStudentsService,getStudentByIdService,addStudentService } = require('../services/studentService')
+   
 
 const addStudent= async (req,res,next)=>{
     try{
-        const sql= `INSERT INTO students(student_name,email,department_id)VALUES(?,?,?)`
-        const values=[req.body.student_name,req.body.email,req.body.department_id]
-        const [results]=await connection.promise().query(sql,values)
+        const results= await addStudentService(req.body.student_name,req.body.email,req.body.department_id)
         return res.status(201).json({
             success: true,
             message: "Student inserted successfully",
@@ -69,7 +66,10 @@ const updateStudent = async (req,res,next)=>{
    try{
      const sql=`UPDATE students SET 
     student_name=?, email=?,department_id=? WHERE student_id=?` 
-    const values=[req.body.student_name,req.body.email,req.body.department_id,req.params.id]
+    const values=[
+    req.body.student_name,                            req.body.email,
+        req.body.department_id,
+        req.params.id]
     const [results]= await connection.promise().query(sql,values)
         if(results.affectedRows===0){
         return res.status(404).json({

@@ -13,5 +13,21 @@ const getStudentByIdService = async (id)=>{
 
     return results
 }
-module.exports={getAllStudentsService,getStudentByIdService}
 
+
+const addStudentService = async(student_name,email,department_id)=>{
+     const sql= `INSERT INTO students(student_name,email,department_id)VALUES(?,?,?)`
+        const values=[student_name,email,department_id]
+        const [results]=await connection.promise().query(sql,values)
+        
+        return results
+}
+const updateStudentService = async (
+    student_name,email,department_id,id
+) =>{
+    const sql=`UPDATE students SET 
+    student_name=?, email=?,department_id=? WHERE student_id=?` 
+    
+}
+
+module.exports={getAllStudentsService,getStudentByIdService,addStudentService}
