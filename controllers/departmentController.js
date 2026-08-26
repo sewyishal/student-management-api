@@ -1,5 +1,5 @@
 const connection= require('../config/db')
-const {getAllDepartmentsService, addDepartmentService, getDepartmentByIdService } = require('../services/departmentService')
+const {getAllDepartmentsService, addDepartmentService, getDepartmentByIdService, updateDepartmentService, deleteDepartmentService } = require('../services/departmentService')
 const addDepartment=async (req,res,next)=>{
     try{
         const results = addDepartmentService(req.params.department_name)
@@ -46,9 +46,7 @@ catch(err){
 
 const updateDepartment= async (req,res,next)=>{
     try{
-    const sql=`UPDATE departments SET department_name=? WHERE department_id=?`
-    const values=[req.body.department_name,req.params.id]
-    const [results]= await connection.promise().query(sql,values)
+        const results = await updateDepartmentService(req.body.department_name,req.params.id)
         
     if(results.affectedRows===0){
         return res.status(404).json({
@@ -69,9 +67,7 @@ const updateDepartment= async (req,res,next)=>{
 
 const deleteDepartment = async (req,res,next)=>{
     try{
-         const sql= `DELETE FROM departments WHERE department_id=?`
-         const values=[req.params.id]
-         const [results]= await connection.promise().query(sql,values)
+         const results = await deleteDepartmentService(req.params.id)
          if (results.affectedRows === 0) {
           return res.status(404).json({
            success: false,

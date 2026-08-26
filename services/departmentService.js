@@ -17,5 +17,18 @@ const getDepartmentByIdService = async(id)=>{
     const [results]= await connection.promise().query(sql,values)
     return results
 }
+const updateDepartmentService = async(department_name,id)=>{
+    const sql=`UPDATE departments SET department_name=? WHERE department_id=?`
+    const values=[department_name,id]
+    const [results]= await connection.promise().query(sql,values)
+    return results
+}
+const deleteDepartmentService= async(id)=>{
+    const sql= `DELETE FROM departments WHERE department_id=?`
+         const values=[id]
+         const [results]= await connection.promise().query(sql,values)
+         return results
+}
 
-module.exports ={addDepartmentService,getAllDepartmentsService,getDepartmentByIdService}
+
+module.exports ={addDepartmentService,getAllDepartmentsService,getDepartmentByIdService,updateDepartmentService,deleteDepartmentService}
