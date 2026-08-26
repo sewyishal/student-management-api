@@ -5,4 +5,13 @@ const getAllStudentsService = async ()=>{
         
      return results 
 }
-module.exports={getAllStudentsService}
+
+const getStudentByIdService = async (id)=>{
+    const sql=` SELECT * FROM students WHERE student_id=?`
+    const values=[id]
+    const [results]=await connection.promise().query(sql,values)
+
+    return results
+}
+module.exports={getAllStudentsService,getStudentByIdService}
+
