@@ -1,11 +1,8 @@
 const connection= require('../config/db')
-
+const {getAllDepartmentsService, addDepartmentService } = require('../services/departmentService')
 const addDepartment=async (req,res,next)=>{
     try{
-        const sql=`INSERT INTO departments(department_name) VALUES(?)`
-        const values=[req.body.department_name]
-        const [results]= await connection.promise().query(sql,values)
-
+        const results = addDepartmentService(req.params.department_name)
         return res.status(201).json({
             success: true,
             message:"Department added successfully",
@@ -18,7 +15,7 @@ const addDepartment=async (req,res,next)=>{
 }
 const getAllDepartments =async (req,res,next)=>{
     try{
-          const [results]= await connection.promise().query(`SELECT * FROM departments`) 
+        const results= await getAllDepartmentsService()
            return res.status(200).json({
             success: true,
             data: results
