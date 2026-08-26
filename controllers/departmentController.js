@@ -1,5 +1,5 @@
 const connection= require('../config/db')
-const {getAllDepartmentsService, addDepartmentService } = require('../services/departmentService')
+const {getAllDepartmentsService, addDepartmentService, getDepartmentByIdService } = require('../services/departmentService')
 const addDepartment=async (req,res,next)=>{
     try{
         const results = addDepartmentService(req.params.department_name)
@@ -27,10 +27,7 @@ const getAllDepartments =async (req,res,next)=>{
 } 
 const getDepartmentById= async (req,res,next)=>{
     try{
-    const sql=`SELECT * FROM departments WHERE department_id=?`
-    const values= [req.params.id ]
-    const [results]= await connection.promise().query(sql,values)
-
+        const results= await getDepartmentByIdService(req.params.id)
     if(results.length===0){
         return res.status(404).json({
             success: false,

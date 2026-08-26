@@ -11,4 +11,11 @@ const getAllDepartmentsService = async()=>{
     const [results]= await connection.promise().query(`SELECT * FROM departments`) 
     return results
 }
-module.exports ={addDepartmentService,getAllDepartmentsService}
+const getDepartmentByIdService = async(id)=>{
+    const sql=`SELECT * FROM departments WHERE department_id=?`
+    const values= [id ]
+    const [results]= await connection.promise().query(sql,values)
+    return results
+}
+
+module.exports ={addDepartmentService,getAllDepartmentsService,getDepartmentByIdService}
