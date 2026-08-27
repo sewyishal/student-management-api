@@ -18,6 +18,7 @@ connection.query('SELECT 1', (err) => {
         console.log(err);
     } else {
         console.log('Database connected successfully');
+        createTables();
     }
 });
 app.listen(3000,()=>{

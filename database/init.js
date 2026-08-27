@@ -1,3 +1,4 @@
+const connection = require('../config/db')
 const createTables = async () => {
     try {
         await connection.promise().query(`
