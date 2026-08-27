@@ -1,8 +1,8 @@
-const connection= require('../config/db')
+
 const {getAllDepartmentsService, addDepartmentService, getDepartmentByIdService, updateDepartmentService, deleteDepartmentService } = require('../services/departmentService')
 const addDepartment=async (req,res,next)=>{
     try{
-        const results = addDepartmentService(req.params.department_name)
+        const results = await addDepartmentService(req.body.department_name)
         return res.status(201).json({
             success: true,
             message:"Department added successfully",
