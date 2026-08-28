@@ -1,5 +1,4 @@
 const express = require('express')
-const connection =require('../config/db');
 const {addStudent,getAllStudents,getStudentById,getStudentsWithDepartment, updateStudent, deleteStudent} = require('../controllers/studentController');
 const validateStudent = require('../middleware/validateStudent');
 const checkDepartment = require('../middleware/checkDepartment');
