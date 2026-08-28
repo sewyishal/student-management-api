@@ -6,5 +6,10 @@ const addUserService = async (username,email,hashedpassword)=>{
     const [results] = await connection.promise().query(sql,values)
     return results
 }
-
-module.exports= {addUserService}
+const getUserByEmailService = async (email) =>{
+    const sql = `SELECT * FROM users WHERE email=?`
+    const values =[email]
+    const [results]= await connection.promise().query(sql,values)
+    return results
+}
+module.exports= {addUserService,getUserByEmailService}
