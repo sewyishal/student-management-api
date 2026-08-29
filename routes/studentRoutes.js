@@ -3,6 +3,7 @@ const {addStudent,getAllStudents,getStudentById,getStudentsWithDepartment, updat
 const validateStudent = require('../middleware/validateStudent');
 const checkDepartment = require('../middleware/checkDepartment');
 const authMiddleware = require('../middleware/authMiddleware')
+const roleMiddleware = require('../middleware/roleMiddleware')
 const router =express.Router();
 
 router.post('/students',validateStudent,checkDepartment,addStudent)
@@ -15,6 +16,6 @@ router.get('/students-with-department',getStudentsWithDepartment)
 
 router.put('/students/:id',validateStudent,checkDepartment,updateStudent)
 
-router.delete('/students/:id',deleteStudent)
+router.delete('/students/:id',authMiddleware,roleMiddleware("admin"),deleteStudent)
 
 module.exports=router
