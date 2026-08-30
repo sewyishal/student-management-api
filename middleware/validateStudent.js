@@ -1,34 +1,35 @@
-const connection = require('../config/db');
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const { body, validationResult } = require("express-validator");
 
-const validateStudent = (req, res, next) => {
-    if (!req.body.student_name) {
-        return res.status(400).json({
-            success: false,
-            message: "Student name field is empty"
-        });
-    }
+const validateStudent = [
 
-    if (!req.body.email) {
-        return res.status(400).json({
-            success: false,
-            message: "Email field is empty"
-        });
-    }
+    body("student_name")
+        .notEmpty()
+        .withMessage("Student name is required"),
 
-    if (!emailPattern.test(req.body.email)) {
-        return res.status(400).json({
-            success: false,
-            message: "Email format is not correct"
-        });
+    body("email")
+        .notEmpty()
+        .withMessage("Email is required")
+        .isEmail()
+        .withMessage("Email format is invalid"),
+
+    body("department_id")
+        .notEmpty()
+        .withMessage("Department ID is required")
+        .isInt()
+        .withMessage("Department ID must be an integer"),
+
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                success: false,
+                errors: errors.array()
+            });
+        }
+
+        next();
     }
-    if(!req.body.department_id){
-        return res.status(400).json({
-            success: false ,
-            message:"Department Id is required"
-        })
-    }
-    next();
-};
+];
 
 module.exports = validateStudent;
