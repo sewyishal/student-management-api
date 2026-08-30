@@ -1,12 +1,22 @@
-const connection = require('../config/db')
+const { body, validationResult } = require("express-validator");
 
-const validateDepartment =(req,res,next)=>{
-    if(!req.body.department_name){
-        return res.status(400).json({
-            success: false,
-            message:"Department name is required"
-        })
+const validateDepartment = [
+    body("department_name")
+        .notEmpty()
+        .withMessage("Department name is required"),
+
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                success: false,
+                errors: errors.array()
+            });
+        }
+
+        next();
     }
-    next()
-}
-module.exports =validateDepartment
+];
+
+module.exports = validateDepartment;
