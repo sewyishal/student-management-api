@@ -6,8 +6,11 @@ const departmentRoutes= require('./routes/departmentRoutes')
 const studentRoutes =require('./routes/studentRoutes')
 const errorHandler=require('./middleware/errorHandler')
 const userRoutes = require('./routes/userRoutes');
+const swaggerUi = require("swagger-ui-express")
+const swaggerSpec = require("./config/swagger")
 const app= express();
 app.use(express.json())
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(departmentRoutes);
 app.use(studentRoutes);
 app.use(userRoutes);
