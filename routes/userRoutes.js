@@ -21,10 +21,13 @@ const router = express.Router()
  *             properties:
  *               username:
  *                 type: string
+ *                 example: "kebede"
  *               email:
  *                 type: string
+ *                example:"keb@gmail.com"
  *               password:
  *                 type: string
+ *                 example: "123456"
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -32,6 +35,33 @@ const router = express.Router()
  *         description: Validation error
  */
 router.post('/register',validateUser,registerUser)
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Login existing user
+ *     description: Authenticates a user and returns a JWT token.
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: "keb@gmail.com"
+ *               password:
+ *                 type: string
+ *                 example: "123456"
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       401:
+ *         description: Invalid email or password
+ */
 router.post('/login',loginUser)
 router.get('/test', (req, res) => {
     res.send('User routes are working!');
