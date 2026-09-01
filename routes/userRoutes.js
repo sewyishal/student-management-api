@@ -1,9 +1,10 @@
 console.log("userRoutes loaded");
-const express = require('express')
-const {registerUser,loginUser} = require('../controllers/userController')
-const validateUser = require ('../middleware/validateUser') 
+const express = require('express');
+const { registerUser, loginUser } = require('../controllers/userController');
+const validateUser = require('../middleware/validateUser');
 
-const router = express.Router()
+const router = express.Router();
+
 /**
  * @swagger
  * /register:
@@ -24,7 +25,7 @@ const router = express.Router()
  *                 example: "kebede"
  *               email:
  *                 type: string
- *                example:"keb@gmail.com"
+ *                 example: "keb@gmail.com"
  *               password:
  *                 type: string
  *                 example: "123456"
@@ -34,7 +35,8 @@ const router = express.Router()
  *       400:
  *         description: Validation error
  */
-router.post('/register',validateUser,registerUser)
+router.post('/register', validateUser, registerUser);
+
 /**
  * @swagger
  * /login:
@@ -62,8 +64,10 @@ router.post('/register',validateUser,registerUser)
  *       401:
  *         description: Invalid email or password
  */
-router.post('/login',loginUser)
+router.post('/login', loginUser);
+
 router.get('/test', (req, res) => {
-    res.send('User routes are working!');
+  res.send('User routes are working!');
 });
-module.exports = router
+
+module.exports = router;
