@@ -1,4 +1,14 @@
 {
+  "name": "student-management-api",
+  "version": "1.0.0",
+  "description": "Student Management REST API",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",

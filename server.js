@@ -5,6 +5,7 @@ const createTables =require('./database/init')
 const swaggerUi = require("swagger-ui-express")
 const swaggerSpec = require("./config/swagger")
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 connection.query('SELECT 1', (err) => {
     if (err) {
         console.log(err);
