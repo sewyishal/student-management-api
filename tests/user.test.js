@@ -1,5 +1,6 @@
 const request = require("supertest")
-const app = require("../app")
+const app = require("../app");
+const expectCookies = require("supertest/lib/cookies");
 
 describe("User API",()=>{
 test("should register a new user", async() =>{
@@ -12,10 +13,20 @@ test("should register a new user", async() =>{
     password: "123456"
 })
 expect(response.status).toBe(201)
-expect(response.success).toBe(true)
+expect(response.body.success).toBe(true)
 expect(response.body.user_id).toBeDefined()
 })
-
+test("should fail if email is missing", async() =>{
+    const response= await request(app)
+            .post('/register')
+            .send({
+                username:"Abebe",
+                password:"123456"
+            })
+    expect(response.status).toBe(400)
+    expect(response.body.success).toBe(false)
+    expect(response.body.erros).toBeDefined()
+})
 })
 
 test("Login user", async()=>{
