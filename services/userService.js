@@ -2,7 +2,7 @@ const connection = require("../config/db")
 
 const addUserService = async (username,email,hashedpassword)=>{
     const role ="student"
-    const sql=`INSERT INTO users(username,email,password) VALUES(?,?,?,?)`
+    const sql=`INSERT INTO users(username,email,password,role) VALUES(?,?,?,?)`
     const values =[username,email,hashedpassword,role]
     const [results] = await connection.promise().query(sql,values)
     return results

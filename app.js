@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 
 const departmentRoutes= require('./routes/departmentRoutes')

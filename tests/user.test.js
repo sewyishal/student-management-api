@@ -60,7 +60,7 @@ test("should return 401 if no token is provided",async()=>{
     const response = await request(app).get('/students')
     expect(response.status).toBe(401)
     expect(response.body.success).toBe(false)
-    expect(response.body.message).toBe("Access denied. No token provided");
+    expect(response.body.message).toBe("Access denied. No token provided.");
 })
 test("should check if the user sent a token",async()=>{
     const response =await request(app).get('/students').set('Authorization',`Bearer ${token}`)

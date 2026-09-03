@@ -1,4 +1,4 @@
-require('dotenv').config()
+
 const app = require('./app')
 const connection =require('./config/db')
 const createTables =require('./database/init')
