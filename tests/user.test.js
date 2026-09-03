@@ -27,6 +27,21 @@ test("should fail if email is missing", async() =>{
     expect(response.body.success).toBe(false)
     expect(response.body.erros).toBeDefined()
 })
+test("should fail for duplicate email", async()=>{
+    const response=await request(app).post('/register').send({
+    "username": "Abebe",
+    "email": "existing@gmail.com",
+    "password": "123456"
+    })
+    expect(response.status).toBe(409)
+   expect(response.body.message).toBe("Email already exists");
+})
+test("should return 401 if no token is provided",async()=>{
+    const response = await request(app).get('/students')
+    expect(response.status).toBe(401)
+    expect(response.body.success).toBe(false)
+    expect(response.body.message).toBe("Access denied. No token provided");
+})
 })
 
 test("Login user", async()=>{
