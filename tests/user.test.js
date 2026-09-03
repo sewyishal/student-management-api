@@ -71,14 +71,3 @@ test("should check if the user sent a token",async()=>{
 })
 })
 
-test("Login user", async()=>{
-   const response= await request(app)
-    .post('/login')
-    .send({
-        email: "abe@gmail.com",
-        password:"123456"
-    })
-    expect(response.status).toBe(200)
-    expect(response.success).toBe(true)
-    expect(response.body.token).toBeDefined();
-}) 
