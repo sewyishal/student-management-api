@@ -7,13 +7,15 @@ describe("User API",()=>{
 
     beforeAll(async()=>{
         email = `test${Date.now()}@gmail.com`;
-         await request(app)
-    .post('/register')
+  const registerResponse = await request(app)
+    .post("/register")
     .send({
-    username: "Abebe",
-    email,
-    password: "123456"
-})
+        username: "Abebe",
+        email,
+        password: "123456"
+    });
+
+expect(registerResponse.status).toBe(201);
      const loginResponse = await request(app)
             .post("/login")
             .send({
@@ -29,7 +31,7 @@ test("should register a new user", async() =>{
     .post('/register')
     .send({
     username: "Abebe",
-    newEmail,
+    email: newEmail,
     password: "123456"
 })
 expect(response.status).toBe(201)
@@ -70,4 +72,9 @@ test("should check if the user sent a token",async()=>{
     expect(Array.isArray(response.body.data)).toBe(true);
 })
 })
+const connection = require("../config/db");
+
+afterAll(async () => {
+    await connection.promise().end();
+});
 
