@@ -4,7 +4,6 @@ const app = require("../app");
 describe("User API",()=>{
     let token
     let email
-
     beforeAll(async()=>{
         email = `test${Date.now()}@gmail.com`;
   const registerResponse = await request(app)

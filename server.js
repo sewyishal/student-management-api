@@ -14,6 +14,7 @@ connection.query('SELECT 1', (err) => {
         createTables();
     }
 });
+console.log("For the sake of streak")
 app.listen(3000,()=>{
     console.log("App is running at http://localhost:3000/ ")
 })
